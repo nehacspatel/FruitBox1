@@ -2,21 +2,21 @@ const express = require('express');
 const cors = require('cors');
 const Razorpay = require("razorpay");
 const crypto = require("crypto");
-const { Pool } = require('pg'); // PostgreSQL library
-require('dotenv').config(); // Load environment variables
+const { Pool } = require('pg'); 
+require('dotenv').config(); 
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// Razorpay instance
+
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
   key_secret: process.env.RAZORPAY_KEY_SECRET,
 });
 
-// Order Creation Route
+
 app.post("/order", async (req, res) => {
   try {
     const { amount } = req.body;
@@ -24,7 +24,7 @@ app.post("/order", async (req, res) => {
     console.log(process.env.RAZORPAY_KEY_SECRET);
 
     const options = {
-      amount: amount * 100, // Convert to paise
+      amount: amount * 100, 
       currency: "INR",
       receipt: `receipt_${Date.now()}`,
     };
@@ -48,7 +48,7 @@ app.post("/order", async (req, res) => {
   }
 });
 
-// Payment Verification Route
+
 app.post("/verify-payment", (req, res) => {
   const { razorpay_payment_id, razorpay_order_id, razorpay_signature } = req.body;
 
@@ -58,7 +58,7 @@ app.post("/verify-payment", (req, res) => {
     .digest("hex");
 
   if (generated_signature === razorpay_signature) {
-    // Update payment in database here
+    
     res.json({ success: true, message: "Payment verified successfully" });
   } else {
     res.status(400).json({ success: false, message: "Payment verification failed" });

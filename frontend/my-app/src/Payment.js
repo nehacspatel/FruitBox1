@@ -8,9 +8,8 @@ function Payment({
     receiptId = "qwsaq1" 
 }) {
     const [loading, setLoading] = useState(false);
-    const [paymentSuccess, setPaymentSuccess] = useState(false); // State for payment success
-
-    // Check local storage for payment status on component mount
+    const [paymentSuccess, setPaymentSuccess] = useState(false); 
+    
     useEffect(() => {
         const storedPaymentStatus = localStorage.getItem('paymentSuccess');
         if (storedPaymentStatus === 'true') {
@@ -23,7 +22,7 @@ function Payment({
         setLoading(true);
 
         try {
-            // Create an order on the server
+            
             const orderResponse = await fetch(`${server}/order`, {
                 method: "POST",
                 body: JSON.stringify({
@@ -62,8 +61,8 @@ function Payment({
 
                         const verifyResult = await verifyResponse.json();
                         if (verifyResult.success) {
-                            setPaymentSuccess(true); // Set payment success to true
-                            // localStorage.setItem('paymentSuccess', 'true'); // Store in local storage
+                            setPaymentSuccess(true); 
+                            
                         } else {
                             alert('Payment verification failed!');
                         }
@@ -91,7 +90,7 @@ function Payment({
             console.error("Error creating order", error);
             alert("Payment failed");
         } finally {
-            setLoading(false); // Stop loading regardless of success or failure
+            setLoading(false); 
         }
     };
 
